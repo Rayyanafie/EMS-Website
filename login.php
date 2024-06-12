@@ -5,7 +5,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = ($_POST['password']);
     $query = "SELECT * FROM tbl_accounts WHERE username = '$username' and password = '$password'";
     $result = mysqli_query(connection(), $query);
+    $row = mysqli_fetch_assoc($result);
     if ($result->num_rows > 0) {
+        $_SESSION['ID'] = $row['username'];
         echo "<script> alert('Login success.');</script>
         <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
         exit;

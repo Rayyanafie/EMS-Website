@@ -13,7 +13,7 @@ CREATE TABLE tbl_countries (
     id CHAR(3) PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
     region INT,
-    FOREIGN KEY (region) REFERENCES tbl_regions(id)
+    FOREIGN KEY (region) REFERENCES tbl_regions(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_locations (
@@ -23,14 +23,14 @@ CREATE TABLE tbl_locations (
     city VARCHAR(30) NOT NULL,
     state_province VARCHAR(25),
     country CHAR(3),
-    FOREIGN KEY (country) REFERENCES tbl_countries(id)
+    FOREIGN KEY (country) REFERENCES tbl_countries(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     location INT,
-    FOREIGN KEY (location) REFERENCES tbl_locations(id)
+    FOREIGN KEY (location) REFERENCES tbl_locations(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_jobs (
@@ -63,31 +63,31 @@ CREATE TABLE tbl_employees (
     job VARCHAR(10),
     department INT,
     FOREIGN KEY (manager) REFERENCES tbl_employees(id),
-    FOREIGN KEY (job) REFERENCES tbl_jobs(id),
-    FOREIGN KEY (department) REFERENCES tbl_departments(id)
+    FOREIGN KEY (job) REFERENCES tbl_jobs(id) ON DELETE SET NULL,
+    FOREIGN KEY (department) REFERENCES tbl_departments(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_accounts (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
     password VARCHAR(255) NOT NULL,
     otp INT,
     is_expired BIT,
     is_used BIT,
-    FOREIGN KEY (id) REFERENCES tbl_employees(id)
+    FOREIGN KEY (id) REFERENCES tbl_employees(id) ON DELETE cascade
 );
 
 CREATE TABLE tbl_job_histories (
     employee INT,
+    name varchar(255),
     start_date DATE,
     end_date DATE,
     status VARCHAR(10),
     job VARCHAR(10),
     department INT,
     PRIMARY KEY (employee, start_date),
-    FOREIGN KEY (employee) REFERENCES tbl_employees(id),
-    FOREIGN KEY (job) REFERENCES tbl_jobs(id),
-    FOREIGN KEY (department) REFERENCES tbl_departments(id)
+    FOREIGN KEY (job) REFERENCES tbl_jobs(id) ON DELETE SET NULL,
+    FOREIGN KEY (department) REFERENCES tbl_departments(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_payslip (
@@ -95,7 +95,7 @@ CREATE TABLE tbl_payslip (
     salary_period DATE,
     overtime INT,
     PRIMARY KEY (employee, salary_period),
-    FOREIGN KEY (employee) REFERENCES tbl_employees(id)
+    FOREIGN KEY (employee) REFERENCES tbl_employees(id) ON DELETE cascade
 );
 
 CREATE TABLE tbl_account_roles (
@@ -103,16 +103,17 @@ CREATE TABLE tbl_account_roles (
     account INT,
     role INT,
     FOREIGN KEY (account) REFERENCES tbl_accounts(id) ON DELETE CASCADE,
-    FOREIGN KEY (role) REFERENCES tbl_roles(id)
+    FOREIGN KEY (role) REFERENCES tbl_roles(id) ON DELETE SET NULL
 );
 
 CREATE TABLE tbl_role_permissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     role INT,
     permission INT,
-    FOREIGN KEY (role) REFERENCES tbl_roles(id),
-    FOREIGN KEY (permission) REFERENCES tbl_permissions(id)
+    FOREIGN KEY (role) REFERENCES tbl_roles(id) ON DELETE CASCADE,
+    FOREIGN KEY (permission) REFERENCES tbl_permissions(id) ON DELETE SET NULL
 );
+
 -- Trigger
 DELIMITER //
 
@@ -121,8 +122,8 @@ AFTER INSERT
 ON tbl_employees
 FOR EACH ROW
 BEGIN
-    INSERT INTO tbl_job_histories (employee, start_date, status, job, department)
-    VALUES (NEW.id, NEW.hire_date, 'Active', NEW.job, NEW.department);
+    INSERT INTO tbl_job_histories (employee,name, start_date, end_date,status, job, department)
+    VALUES (NEW.id,CONCAT(NEW.first_name, ' ', NEW.last_name), NEW.hire_date,0000-00-00, 'Active', NEW.job, NEW.department);
 END;
 //
 
@@ -149,8 +150,8 @@ AFTER DELETE
 ON tbl_employees
 FOR EACH ROW
 BEGIN
-    INSERT INTO tbl_job_histories (employee, start_date, status, job, department)
-    VALUES (OLD.id, NOW(), 'Resign', OLD.job, OLD.department);
+    INSERT INTO tbl_job_histories (employee, name, end_date, status, job, department)
+    VALUES (OLD.id, CONCAT(OLD.first_name, ' ', OLD.last_name), NOW(), 'Resign', OLD.job, OLD.department);
 END;
 //
 
@@ -559,4 +560,3 @@ VALUES (1, 1);  -- Assuming the account ID is 1 and the role ID is 1
 INSERT INTO tbl_payslip (employee, salary_period, overtime)
 VALUES (1, '2024-06-01', 10);  -- Assuming the employee ID is 1
 
-select * from tbl_employees
