@@ -1,6 +1,3 @@
-<?php
-include ('conn.php');
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,19 +9,16 @@ include ('conn.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>SB Admin 2 - Buttons</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -63,16 +57,17 @@ include ('conn.php');
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Components</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
+                        <a class="collapse-item active" href="buttons.html">Buttons</a>
                         <a class="collapse-item" href="cards.html">Cards</a>
                     </div>
                 </div>
@@ -134,7 +129,7 @@ include ('conn.php');
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span></a>
@@ -161,11 +156,9 @@ include ('conn.php');
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
                     <!-- Topbar Search -->
                     <form
@@ -361,68 +354,185 @@ include ('conn.php');
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php
-                    $employee = '';
-                    $query = "select * from tbl_employees ";
-                    $result = mysqli_query(connection(), $query);
-                    $employee = mysqli_fetch_assoc($result);
-                    echo $employee['email'];
-                    ?>
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                    <h1 class="h3 mb-4 text-gray-800">Buttons</h1>
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Gender</th>
-                                            <th>Phone Number</th>
-                                            <th>Salary</th>
-                                            <th>Job</th>
-                                            <th>Department</th>
-                                        </tr>
-                                    </thead>
-                                    <?php
-                                    $query = "SELECT e.id, e.first_name, e.last_name, e.email, e.gender, e.phone, e.salary, j.title AS job, d.name AS department
-                                    FROM tbl_employees e
-                                    JOIN tbl_jobs j ON e.job = j.id
-                                    JOIN tbl_departments d ON e.department = d.id";
+                    <div class="row">
 
-                                    $result = mysqli_query(connection(), $query);
+                        <div class="col-lg-6">
 
-                                    if ($result) {
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>";
-                                            echo "<td>" . $row['id'] . "</td>";
-                                            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                                            echo "<td>" . $row['email'] . "</td>";
-                                            echo "<td>" . $row['gender'] . "</td>";
-                                            echo "<td>" . $row['phone'] . "</td>";
-                                            echo "<td>" . $row['salary'] . "</td>";
-                                            echo "<td>" . $row['job'] . "</td>";
-                                            echo "<td>" . $row['department'] . "</td>";
-                                            echo "</tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='8'>No data found</td></tr>";
-                                    }
-                                    ?>
-                                </table>
+                            <!-- Circle Buttons -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Circle Buttons</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>Use Font Awesome Icons (included with this theme package) along with the circle
+                                        buttons as shown in the examples below!</p>
+                                    <!-- Circle Buttons (Default) -->
+                                    <div class="mb-2">
+                                        <code>.btn-circle</code>
+                                    </div>
+                                    <a href="#" class="btn btn-primary btn-circle">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-circle">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-circle">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-circle">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    <!-- Circle Buttons (Small) -->
+                                    <div class="mt-4 mb-2">
+                                        <code>.btn-circle .btn-sm</code>
+                                    </div>
+                                    <a href="#" class="btn btn-primary btn-circle btn-sm">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-circle btn-sm">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    <!-- Circle Buttons (Large) -->
+                                    <div class="mt-4 mb-2">
+                                        <code>.btn-circle .btn-lg</code>
+                                    </div>
+                                    <a href="#" class="btn btn-primary btn-circle btn-lg">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-circle btn-lg">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-circle btn-lg">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-circle btn-lg">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle btn-lg">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
                             </div>
+
+                            <!-- Brand Buttons -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Brand Buttons</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>Google and Facebook buttons are available featuring each company's respective
+                                        brand color. They are used on the user login and registration pages.</p>
+                                    <p>You can create more custom buttons by adding a new color variable in the
+                                        <code>_variables.scss</code> file and then using the Bootstrap button variant
+                                        mixin to create a new style, as demonstrated in the <code>_buttons.scss</code>
+                                        file.
+                                    </p>
+                                    <a href="#" class="btn btn-google btn-block"><i class="fab fa-google fa-fw"></i>
+                                        .btn-google</a>
+                                    <a href="#" class="btn btn-facebook btn-block"><i
+                                            class="fab fa-facebook-f fa-fw"></i> .btn-facebook</a>
+
+                                </div>
+                            </div>
+
                         </div>
+
+                        <div class="col-lg-6">
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Split Buttons with Icon</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>Works with any button colors, just use the <code>.btn-icon-split</code> class and
+                                        the markup in the examples below. The examples below also use the
+                                        <code>.text-white-50</code> helper class on the icons for additional styling,
+                                        but it is not required.
+                                    </p>
+                                    <a href="#" class="btn btn-primary btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-flag"></i>
+                                        </span>
+                                        <span class="text">Split Button Primary</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">Split Button Success</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-info btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-info-circle"></i>
+                                        </span>
+                                        <span class="text">Split Button Info</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-warning btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span class="text">Split Button Warning</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-danger btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span class="text">Split Button Danger</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-secondary btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                        <span class="text">Split Button Secondary</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-light btn-icon-split">
+                                        <span class="icon text-gray-600">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                        <span class="text">Split Button Light</span>
+                                    </a>
+                                    <div class="mb-4"></div>
+                                    <p>Also works with small and large button classes!</p>
+                                    <a href="#" class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-flag"></i>
+                                        </span>
+                                        <span class="text">Split Button Small</span>
+                                    </a>
+                                    <div class="my-2"></div>
+                                    <a href="#" class="btn btn-primary btn-icon-split btn-lg">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-flag"></i>
+                                        </span>
+                                        <span class="text">Split Button Large</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -481,13 +591,6 @@ include ('conn.php');
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 
