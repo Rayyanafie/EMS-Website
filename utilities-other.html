@@ -35,7 +35,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->

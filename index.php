@@ -38,7 +38,7 @@ include ('conn.php');
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
@@ -56,18 +56,35 @@ include ('conn.php');
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Employee
             </div>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-user-alt"></i>
                     <span>Employee Management</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="employees.php">Employee</a>
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Data Management</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tableRegions.php">Regions</a>
                     </div>
                 </div>
             </li>
@@ -303,9 +320,9 @@ include ('conn.php');
                             </a>
                         </div>
                         <div class="col-lg-4 mb-4">
-                            <a href="addDepartment.php" class="card bg-success text-white shadow">
+                            <a href="addJobs.php" class="card bg-success text-white shadow">
                                 <div class="card-body">
-                                    Add Department
+                                    Add Job
                                     <div class="text-white-50 small"></div>
                                 </div>
                             </a>
@@ -313,15 +330,15 @@ include ('conn.php');
                         <div class="col-lg-4 mb-4">
                             <a href="addCountry.php" class="card bg-info text-white shadow">
                                 <div class="card-body">
-                                    Add Country
+                                    Add Department
                                     <div class="text-white-50 small"></div>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-6 mb-4">
-                            <a href="addRegion.php" class="card bg-warning text-white shadow">
+                            <a href="addCountry.php" class="card bg-warning text-white shadow">
                                 <div class="card-body">
-                                    Add Region
+                                    Add Country
                                     <div class="text-white-50 small"></div>
                                 </div>
                             </a>

@@ -1,16 +1,19 @@
 <?php
 include ('conn.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $region = $_POST['region'];
-    $query = "INSERT INTO tbl_regions (name) VALUES ('$region')";
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+    $min = $_POST['min'];
+    $max = $_POST['max'];
+    $query = "INSERT INTO tbl_jobs (id, title, min_salary, max_salary) VALUES ('$id', '$title', '$min', '$max')";
     $result = mysqli_query(connection(), $query);
     if ($result) {
-        echo "<script> alert('Region added successfully.');</script>
+        echo "<script> alert('Jobs added successfully.');</script>
         <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
         exit;
     } else {
-        echo "<script> alert('Failed to add Region.');</script>
-        <script> setTimeout(function() { window.location.href = 'addRegion.php'; }, 1000);</script>";
+        echo "<script> alert('Failed to add Jobs.');</script>
+        <script> setTimeout(function() { window.location.href = 'addJobs.php'; }, 1000);</script>";
         exit;
     }
 }
@@ -73,12 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Employee
+                Interface
             </div>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-alt"></i>
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>Employee Management</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -88,26 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Data Management</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
-                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
-                        <a class="collapse-item" href="tableLocations.php">Locations</a>
-                        <a class="collapse-item" href="tableCountries.php">Countries</a>
-                        <a class="collapse-item" href="tableRegions.php">Regions</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -116,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -224,11 +206,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
+                                <?php
+                                $sql = "SELECT id, city FROM tbl_locations";
+                                $result = mysqli_query(connection(), $sql);
+
+                                $countries = [];
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $countries[] = $row;
+                                    }
+                                }
+                                ?>
                                 <form class="user" action="" method="Post">
                                     <div class="form-group">
-                                        <label for="Region Name">Region Name</label>
-                                        <input type="text" class="form-control" id="region" name="region"
-                                            placeholder="Region Name" required>
+                                        <label for="id">Job ID</label>
+                                        <input type="text" class="form-control" id="id" name="id" placeholder="Job ID"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Job Title">Job Title</label>
+                                        <input type="text" class="form-control" id="title" name="title"
+                                            placeholder="Job Title" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="Min Salary">Min Salary</label>
+                                            <input type="number" id="min" name="min" required placeholder="Min Salary"
+                                                class="form-control " required />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="Max Salary">Max Salary</label>
+                                            <input type="number" id="max" name="max" required placeholder="Max Salary"
+                                                class="form-control " required />
+                                        </div>
                                     </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>

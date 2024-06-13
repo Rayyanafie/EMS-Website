@@ -38,14 +38,14 @@ include ('conn.php');
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -66,7 +66,7 @@ include ('conn.php');
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="employees.php">Employee</a>
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="cards.php">History</a>
                     </div>
                 </div>

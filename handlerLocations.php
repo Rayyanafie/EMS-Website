@@ -1,18 +1,50 @@
 <?php
 include ('conn.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $region = $_POST['region'];
-    $query = "INSERT INTO tbl_regions (name) VALUES ('$region')";
-    $result = mysqli_query(connection(), $query);
-    if ($result) {
-        echo "<script> alert('Region added successfully.');</script>
-        <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
-        exit;
-    } else {
-        echo "<script> alert('Failed to add Region.');</script>
-        <script> setTimeout(function() { window.location.href = 'addRegion.php'; }, 1000);</script>";
-        exit;
+$nrp_upd = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        //query SQL
+
+        $query = "SELECT * FROM tbl_locations WHERE id = '$nrp_upd'";
+        //eksekusi query
+        $result = mysqli_query(connection(), $query);
+        $data = mysqli_fetch_assoc($result);
+
     }
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['delete'])) {
+        // Prepare the delete query
+        $sql = "DELETE FROM tbl_locations WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $sql);
+        if ($result) {
+            echo "<script> alert('location deleted successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tablelocations.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to delete location.');</script>
+        <script> setTimeout(function() { window.location.href = 'tablelocations.php'; }, 1000);</script>";
+            exit;
+        }
+    } else {
+        $street = $_POST['street'];
+        $postal = $_POST['postal'];
+        $city = $_POST['city'];
+        $state = $_POST['state'];
+        $location = $_POST['location'];
+        $query = "UPDATE tbl_locations SET street_address = '$street', postal_code = '$postal', city = '$city', state_province = '$state', country = '$location' WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $query);
+        if ($result) {
+            echo "<script> alert('location added successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tablelocations.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to add location.');</script>
+        <script> setTimeout(function() { window.location.href = 'addlocation.php'; }, 1000);</script>";
+            exit;
+        }
+    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -220,38 +252,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add Employee</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Add location</h6>
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
-                                <form class="user" action="" method="Post">
-                                    <div class="form-group">
-                                        <label for="Region Name">Region Name</label>
-                                        <input type="text" class="form-control" id="region" name="region"
-                                            placeholder="Region Name" required>
-                                    </div>
+                                <?php
+                                $sql = "SELECT id, name FROM tbl_countries";
+                                $result = mysqli_query(connection(), $sql);
+
+                                $countries = [];
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $countries[] = $row;
+                                    }
+                                }
+                                ?>
+                                <form class="user" action="" method="post">
+                                    <form class="user" action="" method="post">
+                                        <div class="form-group">
+                                            <label for="street">Street Address</label>
+                                            <input type="text" class="form-control" id="street" name="street"
+                                                placeholder="Street Address"
+                                                value="<?= htmlspecialchars($data['street_address'] ?? '') ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="postal">Postal Code</label>
+                                            <input type="text" class="form-control" id="postal" name="postal"
+                                                placeholder="Postal Code"
+                                                value="<?= htmlspecialchars($data['postal_code'] ?? '') ?>" required>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city">City Name</label>
+                                            <input type="text" class="form-control" id="city" name="city"
+                                                placeholder="City Name"
+                                                value="<?= htmlspecialchars($data['city'] ?? '') ?>" required>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="state">State Province</label>
+                                            <input type="text" class="form-control" id="state" name="state"
+                                                placeholder="State Province"
+                                                value="<?= htmlspecialchars($data['state_province'] ?? '') ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="location">Choose a Location:</label>
+                                            <select class="btn btn-gray-100 border-dark" name="location" id="country">
+                                                <?php foreach ($countries as $country): ?>
+                                                    <option value="<?= htmlspecialchars($country['id']); ?>">
+                                                        <?= htmlspecialchars($country['name']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" name="submit"
+                                                class="btn btn-primary col-md-9">Update</button>
+                                            <button type="submit" name="delete"
+                                                class="btn btn-danger col-md-2">Delete</button>
+                                        </div>
+                                    </form>
+                                </form>
+
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
                     </div>
                 </div>
+
             </div>
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
 
-    </div>
-    <!-- End of Main Content -->
-
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2020</span>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2020</span>
+                </div>
             </div>
-        </div>
-    </footer>
-    <!-- End of Footer -->
+        </footer>
+        <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->

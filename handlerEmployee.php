@@ -1,17 +1,66 @@
 <?php
 include ('conn.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $region = $_POST['region'];
-    $query = "INSERT INTO tbl_regions (name) VALUES ('$region')";
-    $result = mysqli_query(connection(), $query);
-    if ($result) {
-        echo "<script> alert('Region added successfully.');</script>
-        <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
-        exit;
+$nrp_upd = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        //query SQL
+
+        $query = "SELECT * FROM tbl_employees WHERE id = '$nrp_upd'";
+        //eksekusi query
+        $result = mysqli_query(connection(), $query);
+        $employee = mysqli_fetch_assoc($result);
+
+    }
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['delete'])) {
+        // Prepare the delete query
+        $sql = "DELETE FROM tbl_employees WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $sql);
+        if ($result) {
+            echo "<script> alert('Employee deleted successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableEmployees.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to delete employee.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableEmployees.php'; }, 1000);</script>";
+            exit;
+        }
     } else {
-        echo "<script> alert('Failed to add Region.');</script>
-        <script> setTimeout(function() { window.location.href = 'addRegion.php'; }, 1000);</script>";
-        exit;
+        $first = $_POST['first'];
+        $last = $_POST['last'];
+        $gender = $_POST['gender'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $salary = $_POST['salary'];
+        $manager = $_POST['manager'];
+        $job = $_POST['job'];
+        $department = $_POST['department'];
+        $hiredate = $_POST['hiredate'];
+        $sql = "UPDATE tbl_employees SET 
+        first_name = '$first', 
+        last_name = '$last', 
+        gender = '$gender', 
+        email = '$email', 
+        phone = '$phone', 
+        salary = '$salary', 
+        manager = '$manager', 
+        job = '$job', 
+        department = '$department', 
+        hire_date = '$hiredate' 
+        WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $sql);
+        if ($result) {
+            echo "<script> alert('Employee added successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableEmployees.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to add employee.');</script>
+        <script> setTimeout(function() { window.location.href = 'addEmployee.php'; }, 1000);</script>";
+            exit;
+        }
+
+
     }
 }
 ?>
@@ -224,14 +273,135 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
-                                <form class="user" action="" method="Post">
-                                    <div class="form-group">
-                                        <label for="Region Name">Region Name</label>
-                                        <input type="text" class="form-control" id="region" name="region"
-                                            placeholder="Region Name" required>
+                                <?php
+                                $sql1 = "SELECT id, name FROM tbl_departments";
+                                $result1 = mysqli_query(connection(), $sql1);
+
+                                $departments = [];
+                                if ($result1->num_rows > 0) {
+                                    while ($row1 = $result1->fetch_assoc()) {
+                                        $departments[] = $row1;
+                                    }
+                                }
+
+                                $sql2 = "SELECT id, title FROM tbl_jobs";
+                                $result2 = mysqli_query(connection(), $sql2);
+                                $jobs = [];
+                                if ($result2->num_rows > 0) {
+                                    while ($row2 = $result2->fetch_assoc()) {
+                                        $jobs[] = $row2;
+                                    }
+                                }
+                                $sql3 = "SELECT id, first_name, last_name FROM tbl_employees";
+                                $result3 = mysqli_query(connection(), $sql3);
+                                $managers = [];
+                                if ($result3->num_rows > 0) {
+                                    while ($row3 = $result3->fetch_assoc()) {
+                                        $managers[] = $row3;
+                                    }
+                                }
+                                ?>
+                                <form class="user" action="" method="post">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="first">First Name</label>
+                                            <input type="text" class="form-control" id="first" name="first"
+                                                placeholder="First Name"
+                                                value="<?= htmlspecialchars($employee['first_name'] ?? '') ?>" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="last">Last Name</label>
+                                            <input type="text" class="form-control" id="last" name="last"
+                                                placeholder="Last Name"
+                                                value="<?= htmlspecialchars($employee['last_name'] ?? '') ?>" required>
+                                        </div>
                                     </div>
+                                    <div>
+                                        Gender
+                                        <label for="male">
+                                            <input type="radio" id="male" name="gender" value="male"
+                                                <?= (isset($employee['gender']) && $employee['gender'] == 'male') ? 'checked' : '' ?> required>
+                                            Male
+                                        </label>
+                                        <label for="female">
+                                            <input type="radio" id="female" name="gender" value="female"
+                                                <?= (isset($employee['gender']) && $employee['gender'] == 'female') ? 'checked' : '' ?> required>
+                                            Female
+                                        </label>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="email">Email</label>
+                                            <input type="email" id="email" name="email" placeholder="Email"
+                                                class="form-control"
+                                                value="<?= htmlspecialchars($employee['email'] ?? '') ?>" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="text" id="phone" name="phone" placeholder="Phone Number"
+                                                class="form-control"
+                                                value="<?= htmlspecialchars($employee['phone'] ?? '') ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="salary">Salary</label>
+                                            <input type="number" id="salary" name="salary" placeholder="Salary"
+                                                class="form-control"
+                                                value="<?= htmlspecialchars($employee['salary'] ?? '') ?>" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="hiredate">Hire Date</label>
+                                            <input type="date" class="form-control" id="hiredate" name="hiredate"
+                                                value="<?= htmlspecialchars($employee['hire_date'] ?? '') ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="manager">Manager Name:</label><br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="manager"
+                                                id="manager">
+                                                <?php foreach ($managers as $manager): ?>
+                                                    <option value="<?= htmlspecialchars($manager['id']); ?>"
+                                                        <?= (isset($employee['manager_id']) && $employee['manager_id'] == $manager['id']) ? 'selected' : '' ?>>
+                                                        <?= htmlspecialchars($manager['first_name'] . ' ' . $manager['last_name']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="job">Job Name:</label><br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="job" id="job">
+                                                <?php foreach ($jobs as $job): ?>
+                                                    <option value="<?= htmlspecialchars($job['id']); ?>"
+                                                        <?= (isset($employee['job_id']) && $employee['job_id'] == $job['id']) ? 'selected' : '' ?>>
+                                                        <?= htmlspecialchars($job['title']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="department">Department Name:</label><br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="department"
+                                                id="department">
+                                                <?php foreach ($departments as $department): ?>
+                                                    <option value="<?= htmlspecialchars($department['id']); ?>"
+                                                        <?= (isset($employee['department_id']) && $employee['department_id'] == $department['id']) ? 'selected' : '' ?>>
+                                                        <?= htmlspecialchars($department['name']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" name="submit"
+                                            class="btn btn-primary col-md-9">Update</button>
+                                        <button type="submit" name="delete"
+                                            class="btn btn-danger col-md-2">Delete</button>
+                                    </div>
+                                </form>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+
                         </form>
                     </div>
                 </div>

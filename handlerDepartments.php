@@ -1,18 +1,50 @@
 <?php
 include ('conn.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $region = $_POST['region'];
-    $query = "INSERT INTO tbl_regions (name) VALUES ('$region')";
-    $result = mysqli_query(connection(), $query);
-    if ($result) {
-        echo "<script> alert('Region added successfully.');</script>
-        <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
-        exit;
-    } else {
-        echo "<script> alert('Failed to add Region.');</script>
-        <script> setTimeout(function() { window.location.href = 'addRegion.php'; }, 1000);</script>";
-        exit;
+$nrp_upd = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        //query SQL
+
+        $query = "SELECT * FROM tbl_departments WHERE id = '$nrp_upd'";
+        //eksekusi query
+        $result = mysqli_query(connection(), $query);
+        $data = mysqli_fetch_assoc($result);
+
     }
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['delete'])) {
+        // Prepare the delete query
+        $sql = "DELETE FROM tbl_departments WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $sql);
+        if ($result) {
+            echo "<script> alert('Department deleted successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableDepartments.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to delete Department.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableDepartments.php'; }, 1000);</script>";
+            exit;
+        }
+    } else {
+        $department = $_POST['department'];
+        $location = $_POST['location'];
+        $query = "UPDATE tbl_departments SET 
+        name = '$department', 
+        location = '$location
+        where id = $nrp_upd'";
+        $result = mysqli_query(connection(), $query);
+        if ($result) {
+            echo "<script> alert('Department added successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableDepartments.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to add Department.');</script>
+        <script> setTimeout(function() { window.location.href = 'addDepartment.php'; }, 1000);</script>";
+            exit;
+        }
+    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -220,18 +252,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add Employee</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Add Department</h6>
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
+                                <?php
+                                $sql = "SELECT id, city FROM tbl_locations";
+                                $result = mysqli_query(connection(), $sql);
+
+                                $countries = [];
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $countries[] = $row;
+                                    }
+                                }
+                                ?>
                                 <form class="user" action="" method="Post">
                                     <div class="form-group">
-                                        <label for="Region Name">Region Name</label>
-                                        <input type="text" class="form-control" id="region" name="region"
-                                            placeholder="Region Name" required>
+                                        <label for="department">Department Name</label>
+                                        <input type="text" class="form-control" id="department" name="department"
+                                            placeholder="Department Name"
+                                            value="<?= htmlspecialchars($data['name'] ?? '') ?>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location">Choose a Location:</label><br>
+                                        <select class="btn btn-gray-100 border-dark dropdown-toggle" name="location"
+                                            id="country">
+                                            <?php foreach ($countries as $country): ?>
+                                                <option value="<?= htmlspecialchars($country['id']); ?>">
+                                                    <?= htmlspecialchars($country['city']); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary col-md-9">Update</button>
+                            <button type="submit" name="delete" class="btn btn-danger col-md-2">Delete</button>
+                        </div>
                         </form>
                     </div>
                 </div>

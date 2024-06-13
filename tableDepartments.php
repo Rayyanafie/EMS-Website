@@ -12,7 +12,7 @@ include ('conn.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Employee Management System</title>
+    <title>EMS</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -41,36 +41,59 @@ include ('conn.php');
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Employee Management</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item active" href="employees.php">Employee</a>
-                        <a class="collapse-item" href="history.php">History</a>
-                    </div>
-                </div>
-            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
+            <div class="sidebar-heading">
+                Employee
+            </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-alt"></i>
+                    <span>Employee Management</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
+                        <a class="collapse-item" href="history.php">History</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Data Management</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tableRegions.php">Regions</a>
+                    </div>
+                </div>
+            </li>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -79,6 +102,7 @@ include ('conn.php');
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -307,33 +331,22 @@ include ('conn.php');
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Gender</th>
-                                            <th>Phone Number</th>
-                                            <th>Salary</th>
-                                            <th>Job</th>
-                                            <th>Department</th>
+                                            <th>Location</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <?php
-                                    $query = "SELECT e.id, e.first_name, e.last_name, e.email, e.gender, e.phone, e.salary, j.title AS job, d.name AS department
-                                    FROM tbl_employees e
-                                    JOIN tbl_jobs j ON e.job = j.id
-                                    JOIN tbl_departments d ON e.department = d.id";
-
+                                    $query = "SELECT d.id,d.name,l.city from tbl_departments d join tbl_locations l on d.location = l.id";
                                     $result = mysqli_query(connection(), $query);
 
                                     if ($result) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>";
                                             echo "<td>" . $row['id'] . "</td>";
-                                            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                                            echo "<td>" . $row['email'] . "</td>";
-                                            echo "<td>" . $row['gender'] . "</td>";
-                                            echo "<td>" . $row['phone'] . "</td>";
-                                            echo "<td>" . $row['salary'] . "</td>";
-                                            echo "<td>" . $row['job'] . "</td>";
-                                            echo "<td>" . $row['department'] . "</td>";
+                                            echo "<td>" . $row['name'] . "</td>";
+                                            echo "<td>" . $row['city'] . "</td>";
+                                            echo '<td><a href="handlerDepartments.php?id=' . $row['id'] . '" class="btn btn-secondary btn-circle"><i class="fas fa-fw fa-wrench"></i></a></td>';
+
                                             echo "</tr>";
                                         }
                                     } else {

@@ -1,18 +1,46 @@
 <?php
 include ('conn.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $region = $_POST['region'];
-    $query = "INSERT INTO tbl_regions (name) VALUES ('$region')";
-    $result = mysqli_query(connection(), $query);
-    if ($result) {
-        echo "<script> alert('Region added successfully.');</script>
-        <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
-        exit;
-    } else {
-        echo "<script> alert('Failed to add Region.');</script>
-        <script> setTimeout(function() { window.location.href = 'addRegion.php'; }, 1000);</script>";
-        exit;
+$nrp_upd = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        //query SQL
+
+        $query = "SELECT * FROM tbl_regions WHERE id = '$nrp_upd'";
+        //eksekusi query
+        $result = mysqli_query(connection(), $query);
+        $data = mysqli_fetch_assoc($result);
+
     }
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['delete'])) {
+        // Prepare the delete query
+        $sql = "DELETE FROM tbl_regions WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $sql);
+        if ($result) {
+            echo "<script> alert('Region deleted successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableregions.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to delete Region.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableregions.php'; }, 1000);</script>";
+            exit;
+        }
+    } else {
+        $region = $_POST['region'];
+        $query = "UPDATE tbl_regions SET name = '$region' WHERE id = '$nrp_upd'";
+        $result = mysqli_query(connection(), $query);
+        if ($result) {
+            echo "<script> alert('Region added successfully.');</script>
+        <script> setTimeout(function() { window.location.href = 'tableregions.php'; }, 1000);</script>";
+            exit;
+        } else {
+            echo "<script> alert('Failed to add Region.');</script>
+        <script> setTimeout(function() { window.location.href = 'addJob.php'; }, 1000);</script>";
+            exit;
+        }
+    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -73,13 +101,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Employee
+                Interface
             </div>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-alt"></i>
-                    <span>Employee Management</span>
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Region Management</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -88,26 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Data Management</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
-                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
-                        <a class="collapse-item" href="tableLocations.php">Locations</a>
-                        <a class="collapse-item" href="tableCountries.php">Countries</a>
-                        <a class="collapse-item" href="tableRegions.php">Regions</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -116,7 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -220,38 +227,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add Employee</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Edit Region</h6>
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
-                                <form class="user" action="" method="Post">
+                                <form class="user" action="" method="post">
                                     <div class="form-group">
                                         <label for="Region Name">Region Name</label>
                                         <input type="text" class="form-control" id="region" name="region"
-                                            placeholder="Region Name" required>
+                                            placeholder="Region Name"
+                                            value="<?= htmlspecialchars($data['name'] ?? '') ?>" required>
                                     </div>
+                                    <div class="form-group">
+                                        <button type="submit" name="submit"
+                                            class="btn btn-primary col-md-9">Update</button>
+                                        <button type="submit" name="delete"
+                                            class="btn btn-danger col-md-2">Delete</button>
+                                    </div>
+                                </form>
+
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
                     </div>
                 </div>
+
             </div>
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
 
-    </div>
-    <!-- End of Main Content -->
-
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2020</span>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2020</span>
+                </div>
             </div>
-        </div>
-    </footer>
-    <!-- End of Footer -->
+        </footer>
+        <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->

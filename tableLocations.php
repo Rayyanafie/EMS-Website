@@ -12,7 +12,7 @@ include ('conn.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>EMS</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -37,19 +37,19 @@ include ('conn.php');
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -59,86 +59,41 @@ include ('conn.php');
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Employee
             </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <i class="fas fa-user-alt"></i>
+                    <span>Employee Management</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
+                        <a class="collapse-item" href="history.php">History</a>
                     </div>
                 </div>
             </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>Data Management</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tableRegions.php">Regions</a>
                     </div>
                 </div>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item active">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -147,6 +102,7 @@ include ('conn.php');
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -361,24 +317,12 @@ include ('conn.php');
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <?php
-                    $employee = '';
-                    $query = "select * from tbl_employees ";
-                    $result = mysqli_query(connection(), $query);
-                    $employee = mysqli_fetch_assoc($result);
-                    echo $employee['email'];
-                    ?>
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
-
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Employees Data</h6>
+                            <button id="" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fa fa-plus-square text-white-50"></i> Add Employee</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -386,34 +330,39 @@ include ('conn.php');
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Gender</th>
-                                            <th>Phone Number</th>
-                                            <th>Salary</th>
-                                            <th>Job</th>
-                                            <th>Department</th>
+                                            <th>Street Address</th>
+                                            <th>Postal Code</th>
+                                            <th>City</th>
+                                            <th>State Province</th>
+                                            <th>Country</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <?php
-                                    $query = "SELECT e.id, e.first_name, e.last_name, e.email, e.gender, e.phone, e.salary, j.title AS job, d.name AS department
-                                    FROM tbl_employees e
-                                    JOIN tbl_jobs j ON e.job = j.id
-                                    JOIN tbl_departments d ON e.department = d.id";
-
+                                    $query = "SELECT 
+                                                l.id,
+                                                l.street_address,
+                                                l.postal_code,
+                                                l.city,
+                                                l.state_province,
+                                                l.country
+                                            FROM 
+                                                tbl_locations l
+                                            JOIN 
+                                                tbl_countries c ON l.country = c.id;";
                                     $result = mysqli_query(connection(), $query);
 
                                     if ($result) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>";
                                             echo "<td>" . $row['id'] . "</td>";
-                                            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                                            echo "<td>" . $row['email'] . "</td>";
-                                            echo "<td>" . $row['gender'] . "</td>";
-                                            echo "<td>" . $row['phone'] . "</td>";
-                                            echo "<td>" . $row['salary'] . "</td>";
-                                            echo "<td>" . $row['job'] . "</td>";
-                                            echo "<td>" . $row['department'] . "</td>";
+                                            echo "<td>" . $row['street_address'] . "</td>";
+                                            echo "<td>" . $row['postal_code'] . "</td>";
+                                            echo "<td>" . $row['city'] . "</td>";
+                                            echo "<td>" . $row['state_province'] . "</td>";
+                                            echo "<td>" . $row['country'] . "</td>";
+                                            echo '<td><a href="handlerLocations.php?id=' . $row['id'] . '" class="btn btn-secondary btn-circle"><i class="fas fa-fw fa-wrench"></i></a></td>';
+
                                             echo "</tr>";
                                         }
                                     } else {
@@ -466,7 +415,7 @@ include ('conn.php');
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

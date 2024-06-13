@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Employee Management System</title>
+    <title>EMS</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="employees.php">Employee</a>
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
                     </div>
                 </div>
@@ -212,6 +212,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
+                                <?php
+                                $sql1 = "SELECT id, name FROM tbl_departments";
+                                $result1 = mysqli_query(connection(), $sql1);
+
+                                $departments = [];
+                                if ($result1->num_rows > 0) {
+                                    while ($row1 = $result1->fetch_assoc()) {
+                                        $departments[] = $row1;
+                                    }
+                                }
+
+                                $sql2 = "SELECT id, title FROM tbl_jobs";
+                                $result2 = mysqli_query(connection(), $sql2);
+                                $jobs = [];
+                                if ($result2->num_rows > 0) {
+                                    while ($row2 = $result2->fetch_assoc()) {
+                                        $jobs[] = $row2;
+                                    }
+                                }
+                                $sql3 = "SELECT id, first_name, last_name FROM tbl_employees";
+                                $result3 = mysqli_query(connection(), $sql3);
+                                $managers = [];
+                                if ($result3->num_rows > 0) {
+                                    while ($row3 = $result3->fetch_assoc()) {
+                                        $managers[] = $row3;
+                                    }
+                                }
+                                ?>
                                 <form class="user" action="" method="Post">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -254,28 +282,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 class="form-control " required />
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="Manager">Manager</label>
-                                            <input type="text" id="Manager" name="manager" required
-                                                placeholder="Manager" class="form-control " required />
+                                            <label for="hiredate">Hire Date</label>
+                                            <input type="date" class="form-control" id="hiredate" name="hiredate"
+                                                required>
                                         </div>
                                     </div>
 
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="Job Name">Job Name</label>
-                                            <input type="text" class="form-control" id="job" name="job"
-                                                placeholder="Job Name" required>
+                                        <div class="form-group col-md-4">
+                                            <label for="manager">Manager Name :</label></br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="manager"
+                                                id="manager">
+                                                <?php foreach ($managers as $manager): ?>
+                                                    <option value="<?= $manager['id']; ?>">
+                                                        <?= $manager['first_name'] . ' ' . $manager['last_name']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="Department Name">Department Name</label>
-                                            <input type="text" class="form-control" id="department" name="department"
-                                                placeholder="Department Name" required>
+                                        <div class="form-group col-md-4">
+                                            <label for="job">Job Name:</label></br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="job" id="job">
+                                                <?php foreach ($jobs as $job): ?>
+                                                    <option value="<?= $job['id']; ?>"><?= $job['title']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="department">Department Name :</label></br>
+                                            <select class="btn btn-gray-100 border-dark col-md-12" name="department"
+                                                id="department">
+                                                <?php foreach ($departments as $department): ?>
+                                                    <option value="<?= $department['id']; ?>"><?= $department['name']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="hiredate">Hire Date</label>
-                                        <input type="date" class="form-control" id="hiredate" name="hiredate" required>
-                                    </div>
+
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

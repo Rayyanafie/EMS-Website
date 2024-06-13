@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Employee Management System</title>
+    <title>EMS</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Employee Management System</div>
+                <div class="sidebar-brand-text mx-3">EMS</div>
             </a>
 
             <!-- Divider -->
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="employees.php">Employee</a>
+                        <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
                     </div>
                 </div>
@@ -228,8 +228,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             placeholder="Country Name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="region">Choose a region:</label>
-                                        <select name="region" id="country">
+                                        <label for="region">Choose a region:</label></br>
+                                        <select class="btn btn-gray-100 border-dark" name="region" id="country">
                                             <?php foreach ($regions as $region): ?>
                                                 <option value="<?= $region['id']; ?>"><?= $region['name']; ?></option>
                                             <?php endforeach; ?>
