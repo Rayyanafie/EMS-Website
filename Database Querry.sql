@@ -55,7 +55,7 @@ CREATE TABLE tbl_employees (
     first_name VARCHAR(25) NOT NULL,
     last_name VARCHAR(25) NOT NULL,
     gender VARCHAR(10),
-    email VARCHAR(25),
+    email VARCHAR(50),
     phone VARCHAR(20),
     hire_date DATE,
     salary INT,
@@ -509,54 +509,160 @@ END //
 DELIMITER ;
 -- Insert into tbl_regions
 INSERT INTO tbl_regions (name)
-VALUES ('Asia');
+VALUES 
+    ('Asia'),
+    ('Europe'),
+    ('North America'),
+    ('South America'),
+    ('Africa');
 
 -- Insert into tbl_countries
 INSERT INTO tbl_countries (id, name, region)
-VALUES ('IDN', 'Indonesia', 1);
+VALUES 
+    ('IDN', 'Indonesia', 1),
+    ('USA', 'United States', 3),
+    ('GER', 'Germany', 2),
+    ('BRA', 'Brazil', 4),
+    ('NGA', 'Nigeria', 5),
+    ('JPN', 'Japan', 1),
+    ('FRA', 'France', 2),
+    ('CAN', 'Canada', 3),
+    ('AUS', 'Australia', 1),
+    ('CHN', 'China', 1);
 
 -- Insert into tbl_locations
 INSERT INTO tbl_locations (street_address, postal_code, city, state_province, country)
-VALUES ('Jl. Sudirman No. 1', '10220', 'Jakarta', 'DKI Jakarta', 'IDN');
+VALUES 
+    ('Jl. Sudirman No. 1', '10220', 'Jakarta', 'DKI Jakarta', 'IDN'),
+    ('1600 Amphitheatre Parkway', '94043', 'Mountain View', 'CA', 'USA'),
+    ('Unter den Linden 77', '10117', 'Berlin', NULL, 'GER'),
+    ('Av. Paulista, 1000', '01310-100', 'São Paulo', 'SP', 'BRA'),
+    ('Lagos Island', '100001', 'Lagos', 'Lagos', 'NGA');
 
 -- Insert into tbl_jobs
 INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
-VALUES ('J101', 'Software Engineer', 50000, 100000);
-
-INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
-VALUES ('J102', 'Softwaree Engineer', 50000, 100000);
+VALUES 
+    ('J101', 'Software Engineer', 50000, 100000),
+    ('J102', 'Data Scientist', 60000, 110000),
+    ('J103', 'Product Manager', 70000, 120000),
+    ('J104', 'UX/UI Designer', 55000, 105000),
+    ('J105', 'DevOps Engineer', 58000, 108000);
 
 -- Insert into tbl_departments
 INSERT INTO tbl_departments (name, location)
-VALUES ('Engineering', 1);
-
--- Insert into tbl_employees
-INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
-VALUES ('John', 'Doe', 'Male', 'john.doe@example.com', '123-456-7890', '2024-06-01', 60000, NULL, 'J101', 1);
-INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
-VALUES ('John', 'Doe', 'Male', 'johndoe@example.com', '123-456-7890', '2024-06-01', 60000, NULL, 'J101', 1);
+VALUES 
+    ('Engineering', 1),
+    ('Sales', 2),
+    ('Marketing', 3),
+    ('Human Resources', 4),
+    ('Finance', 5);
 
 -- Insert into tbl_permissions
 INSERT INTO tbl_permissions (name)
-VALUES ('View Reports');
+VALUES 
+    ('View Reports'),
+    ('Manage Users'),
+    ('Approve Expenses');
 
 -- Insert into tbl_roles
 INSERT INTO tbl_roles (name)
-VALUES ('Administrator');
+VALUES 
+    ('Administrator'),
+    ('Manager'),
+    ('Employee');
 
--- Insert into tbl_role_permissions
-INSERT INTO tbl_role_permissions (role, permission)
-VALUES (1, 1);  -- Assuming the role ID is 1 and the permission ID is 1
-
+    
+-- Insert into tbl_employees
+INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
+VALUES 
+    ('John', 'Doe', 'Male', 'john.doe@example.com', '123-456-7890', '2024-06-01', 60000, NULL, 'J101', 1),
+    ('Jane', 'Smith', 'Female', 'jane.smith@example.com', '234-567-8901', '2024-06-01', 65000, 1, 'J102', 2),
+    ('Michael', 'Brown', 'Male', 'michael.brown@example.com', '345-678-9012', '2024-06-01', 62000, 1, 'J103', 3),
+    ('Emma', 'Johnson', 'Female', 'emma.johnson@example.com', '456-789-0123', '2024-06-01', 63000, 2, 'J104', 4),
+    ('David', 'Williams', 'Male', 'david.williams@example.com', '567-890-1234', '2024-06-01', 61000, 2, 'J105', 5),
+    ('Olivia', 'Miller', 'Female', 'olivia.miller@example.com', '678-901-2345', '2024-06-01', 64000, 3, 'J101', 1),
+    ('Sophia', 'Davis', 'Female', 'sophia.davis@example.com', '789-012-3456', '2024-06-01', 63000, 3, 'J102', 2),
+    ('Daniel', 'Martinez', 'Male', 'daniel.martinez@example.com', '890-123-4567', '2024-06-01', 62000, 4, 'J103', 3),
+    ('Ethan', 'Garcia', 'Male', 'ethan.garcia@example.com', '901-234-5678', '2024-06-01', 61000, 4, 'J104', 4),
+    ('Ava', 'Lopez', 'Female', 'ava.lopez@example.com', '012-345-6789', '2024-06-01', 65000, 5, 'J105', 5),
+    ('Sophie', 'Moore', 'Female', 'sophie.moore@example.com', '123-456-7890', '2024-06-01', 62000, 5, 'J101', 1),
+    ('William', 'Taylor', 'Male', 'william.taylor@example.com', '234-567-8901', '2024-06-01', 63000, 6, 'J102', 2),
+    ('Chloe', 'Anderson', 'Female', 'chloe.anderson@example.com', '345-678-9012', '2024-06-01', 64000, 7, 'J103', 3),
+    ('James', 'Thomas', 'Male', 'james.thomas@example.com', '456-789-0123', '2024-06-01', 65000, 8, 'J104', 4),
+    ('Isabella', 'Wilson', 'Female', 'isabella.wilson@example.com', '567-890-1234', '2024-06-01', 66000, 9, 'J105', 5),
+    ('Benjamin', 'Harris', 'Male', 'benjamin.harris@example.com', '678-901-2345', '2024-06-01', 67000, 10, 'J101', 1),
+    ('Mia', 'Martin', 'Female', 'mia.martin@example.com', '789-012-3456', '2024-06-01', 68000, 1, 'J102', 2),
+    ('Elijah', 'Thompson', 'Male', 'elijah.thompson@example.com', '890-123-4567', '2024-06-01', 69000, 2, 'J103', 3),
+    ('Charlotte', 'Garcia', 'Female', 'charlotte.garcia@example.com', '901-234-5678', '2024-06-01', 70000, 3, 'J104', 4),
+    ('Daniel', 'Martinez', 'Male', 'daniel.martinez@example.com', '012-345-6789', '2024-06-01', 71000, 4, 'J105', 5),
+    ('Alexander', 'Robinson', 'Male', 'alexander.robinson@example.com', '123-456-7890', '2024-06-01', 72000, 5, 'J101', 1),
+    ('Grace', 'Clark', 'Female', 'grace.clark@example.com', '234-567-8901', '2024-06-01', 73000, 6, 'J102', 2),
+    ('Michael', 'Lewis', 'Male', 'michael.lewis@example.com', '345-678-9012', '2024-06-01', 74000, 7, 'J103', 3),
+    ('Ava', 'Walker', 'Female', 'ava.walker@example.com', '456-789-0123', '2024-06-01', 75000, 8, 'J104', 4),
+    ('Henry', 'Young', 'Male', 'henry.young@example.com', '567-890-1234', '2024-06-01', 76000, 9, 'J105', 5),
+    ('Sofia', 'Allen', 'Female', 'sofia.allen@example.com', '678-901-2345', '2024-06-01', 77000, 10, 'J101', 1),
+    ('Jack', 'Scott', 'Male', 'jack.scott@example.com', '789-012-3456', '2024-06-01', 78000, 1, 'J102', 2),
+    ('Lily', 'Green', 'Female', 'lily.green@example.com', '890-123-4567', '2024-06-01', 79000, 2, 'J103', 3),
+    ('Luke', 'Baker', 'Male', 'luke.baker@example.com', '901-234-5678', '2024-06-01', 80000, 3, 'J104', 4),
+    ('Madison', 'Hill', 'Female', 'madison.hill@example.com', '012-345-6789', '2024-06-01', 81000, 4, 'J105', 5);
+    
 -- Insert into tbl_accounts
-INSERT INTO tbl_accounts (id,username, password, otp, is_expired, is_used)
-VALUES (1,'john', '123', 123456, 0, NULL);
-
+INSERT INTO tbl_accounts (id, username, password, otp, is_expired, is_used)
+VALUES 
+    (1, 'john', '123', 123456, 0, NULL),
+    (2, 'jane', '456', 789012, 0, NULL),
+    (3, 'smith', '789', 234567, 0, NULL),
+    (4, 'alice', 'abc', 890123, 0, NULL),
+    (5, 'bob', 'def', 456789, 0, NULL),
+    (6, 'emma', 'ghi', 567890, 0, NULL),
+    (7, 'michael', 'jkl', 678901, 0, NULL),
+    (8, 'sophia', 'mno', 789012, 0, NULL),
+    (9, 'david', 'pqr', 890123, 0, NULL),
+    (10, 'olivia', 'stu', 901234, 0, NULL);
+    (11, '2024-06-01', 12),
+    (12, '2024-06-01', 14),
+    (13, '2024-06-01', 16),
+    (14, '2024-06-01', 18),
+    (15, '2024-06-01', 20),
+    (16, '2024-06-01', 22),
+    (17, '2024-06-01', 24),
+    (18, '2024-06-01', 26),
+    (19, '2024-06-01', 28),
+    (20, '2024-06-01', 30);
+    
 -- Insert into tbl_account_roles
 INSERT INTO tbl_account_roles (account, role)
-VALUES (1, 1);  -- Assuming the account ID is 1 and the role ID is 1
-
+VALUES 
+    (1, 1), (2, 2), (3, 3), (4, 1), (5, 2),
+    (6, 3), (7, 1), (8, 2), (9, 3), (10, 1);
 -- Insert into tbl_payslip
 INSERT INTO tbl_payslip (employee, salary_period, overtime)
-VALUES (1, '2024-06-01', 10);  -- Assuming the employee ID is 1
+VALUES 
+    (1, '2024-06-01', 10),
+    (2, '2024-06-01', 15),
+    (3, '2024-06-01', 12),
+    (4, '2024-06-01', 18),
+    (5, '2024-06-01', 20),
+    (6, '2024-06-01', 13),
+    (7, '2024-06-01', 11),
+    (8, '2024-06-01', 17),
+    (9, '2024-06-01', 14),
+    (10, '2024-06-01', 16);  -- Assuming the employee IDs are sequential
 
+
+CREATE VIEW vw_employee_salary AS
+SELECT
+    e.id AS id,
+    p.salary_period AS salary_period,
+    CONCAT(e.first_name, ' ', e.last_name) AS full_name,
+    p.overtime AS total_overtime,
+    e.salary AS base_salary,
+    (0.015 * e.salary * p.overtime) AS overtime_salary,
+    (e.salary * 0.1) AS pph,
+    (e.salary + (0.015 * e.salary * p.overtime) - (e.salary * 0.1)) AS total_salary
+FROM 
+    tbl_employees e
+JOIN 
+    tbl_payslip p ON e.id = p.employee;
+
+SELECT * FROM vw_employee_salary;

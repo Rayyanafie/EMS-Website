@@ -134,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
+                        <a class="collapse-item" href="tablePayslip.php">Payslip</a>
                     </div>
                 </div>
             </li>
@@ -155,6 +156,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </li>
 
+            <div class="sidebar-heading">
+                Utilities
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="performance.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Performance Calculator</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

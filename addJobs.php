@@ -88,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
+                        <a class="collapse-item" href="tablePayslip.php">Payslip</a>
                     </div>
                 </div>
             </li>
@@ -240,8 +241,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 class="form-control " required />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <button type="submit" name="submit"
+                                            class="btn btn-primary col-md-12">submit</button>
+                                    </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>

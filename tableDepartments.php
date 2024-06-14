@@ -71,6 +71,7 @@ include ('conn.php');
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
+                        <a class="collapse-item" href="tablePayslip.php">Payslip</a>
                     </div>
                 </div>
             </li>
@@ -91,7 +92,22 @@ include ('conn.php');
                     </div>
                 </div>
             </li>
-
+            <div class="sidebar-heading">
+                Utilities
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="performance.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Performance Calculator</span></a>
+            </li>
+            <div class="sidebar-heading">
+                Utilities
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="performance.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Performance Calculator</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -321,8 +337,7 @@ include ('conn.php');
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Employees Data</h6>
-                            <button id="" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                    class="fa fa-plus-square text-white-50"></i> Add Employee</button>
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

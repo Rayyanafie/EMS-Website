@@ -330,7 +330,7 @@ include ('conn.php');
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Employees Data</h6>
-                            
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -338,36 +338,28 @@ include ('conn.php');
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Salary Perion</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Gender</th>
-                                            <th>Phone Number</th>
-                                            <th>Salary</th>
-                                            <th>Job</th>
-                                            <th>Department</th>
-                                            <th>Action</th>
+                                            <th>Total Overtime</th>
+                                            <th>Base Salary</th>
+                                            <th>Overtime Salary</th>
+                                            <th>Total Salary</th>
                                         </tr>
                                     </thead>
                                     <?php
-                                    $query = "SELECT e.id, e.first_name, e.last_name, e.email, e.gender, e.phone, e.salary, j.title AS job, d.name AS department
-                                    FROM tbl_employees e
-                                    JOIN tbl_jobs j ON e.job = j.id
-                                    JOIN tbl_departments d ON e.department = d.id";
-
+                                    $query = "SELECT * FROM vw_employee_salary";
                                     $result = mysqli_query(connection(), $query);
 
                                     if ($result) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>";
                                             echo "<td>" . $row['id'] . "</td>";
-                                            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                                            echo "<td>" . $row['email'] . "</td>";
-                                            echo "<td>" . $row['gender'] . "</td>";
-                                            echo "<td>" . $row['phone'] . "</td>";
-                                            echo "<td>" . $row['salary'] . "</td>";
-                                            echo "<td>" . $row['job'] . "</td>";
-                                            echo "<td>" . $row['department'] . "</td>";
-                                            echo '<td><a href="handlerEmployees.php?id=' . $row['id'] . '" class="btn btn-secondary btn-circle"><i class="fas fa-fw fa-wrench"></i></a></td>';
+                                            echo "<td>" . $row['salary_period'] . "</td>";
+                                            echo "<td>" . $row['full_name'] . "</td>";
+                                            echo "<td>" . $row['total_overtime'] . "</td>";
+                                            echo "<td>" . $row['base_salary'] . "</td>";
+                                            echo "<td>" . $row['overtime_salary'] . "</td>";
+                                            echo "<td>" . $row['total_salary'] . "</td>";
 
                                             echo "</tr>";
                                         }

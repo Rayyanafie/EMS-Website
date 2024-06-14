@@ -1,5 +1,37 @@
 <?php
-include ('conn.php');
+function calculateCompositeScore($attendance, $kpi, $overtime, $maxDaysAbsent, $maxLateArrivals, $maxKPI, $maxOvertime)
+{
+    if ($maxDaysAbsent == 0 || $maxLateArrivals == 0 || $maxKPI == 0 || $maxOvertime == 0) {
+        throw new Exception("Normalization maximum values must be greater than zero");
+    }
+
+    $normalizedAttendance = (($maxDaysAbsent - $attendance['daysAbsent']) / $maxDaysAbsent) * 0.5 + (($maxLateArrivals - $attendance['lateArrivals']) / $maxLateArrivals) * 0.5;
+    $normalizedKPI = $kpi / $maxKPI;
+    $normalizedOvertime = $overtime / $maxOvertime;
+
+    $compositeScore = (0.3 * $normalizedAttendance) + (0.5 * $normalizedKPI) + (0.2 * $normalizedOvertime);
+    return $compositeScore;
+}
+function makeTerminationDecision($compositeScore)
+{
+    if ($compositeScore < 0.65) {
+        return "High risk of termination";
+    } elseif ($compositeScore >= 0.65 && $compositeScore <= 0.80) {
+        return "Review required";
+    } else {
+        return "Satisfactory performance";
+    }
+}
+function getColor($decision)
+{
+    if ($decision == "High risk of termination") {
+        return "red";
+    } elseif ($decision == "Review required") {
+        return "yellow";
+    } else {
+        return "green";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,17 +46,14 @@ include ('conn.php');
 
     <title>EMS</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -48,7 +77,7 @@ include ('conn.php');
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -92,11 +121,10 @@ include ('conn.php');
                     </div>
                 </div>
             </li>
-
             <div class="sidebar-heading">
                 Utilities
             </div>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="performance.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Performance Calculator</span></a>
@@ -126,11 +154,9 @@ include ('conn.php');
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
                     <!-- Topbar Search -->
                     <form
@@ -329,57 +355,70 @@ include ('conn.php');
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Employees Data</h6>
-                            
+                            <h6 class="m-0 font-weight-bold text-primary">Performance Calculator</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Gender</th>
-                                            <th>Phone Number</th>
-                                            <th>Salary</th>
-                                            <th>Job</th>
-                                            <th>Department</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
+                            <class="table-responsive">
+                                <form class="user" action="" method="Post">
+                                    <div class="form-group">
+                                        <label for="KPI">KPI Score</label>
+                                        <input type="number" class="form-control" id="kpi" name="kpi"
+                                            placeholder="KPI Score" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Late Code">Total Late Arrival</label>
+                                        <input type="number" class="form-control" id="late" name="late"
+                                            placeholder="Total Late Arrival" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Absent">Total Absent Day</label>
+                                        <input type="number" class="form-control" id="absent" name="absent"
+                                            placeholder="Total Absent Day" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Overtime">Total Work Overtime </label>
+                                        <input type="number" class="form-control" id="overtime" name="overtime"
+                                            placeholder="Total Work Overtime" required>
+                                    </div>
+                                    <div class="form-group"> <button type="submit"
+                                            class="btn btn-primary ">Submit</button>
+                                    </div>
                                     <?php
-                                    $query = "SELECT e.id, e.first_name, e.last_name, e.email, e.gender, e.phone, e.salary, j.title AS job, d.name AS department
-                                    FROM tbl_employees e
-                                    JOIN tbl_jobs j ON e.job = j.id
-                                    JOIN tbl_departments d ON e.department = d.id";
+                                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                        $kpi = $_POST['kpi'];
+                                        $late = $_POST['late'];
+                                        $absent = $_POST['absent'];
+                                        $overtime = $_POST['overtime'];
 
-                                    $result = mysqli_query(connection(), $query);
+                                        $maxDaysAbsent = 3;
+                                        $maxLateArrivals = 5;
+                                        $maxKPI = 100;
+                                        $maxOvertime = 40;
 
-                                    if ($result) {
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>";
-                                            echo "<td>" . $row['id'] . "</td>";
-                                            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                                            echo "<td>" . $row['email'] . "</td>";
-                                            echo "<td>" . $row['gender'] . "</td>";
-                                            echo "<td>" . $row['phone'] . "</td>";
-                                            echo "<td>" . $row['salary'] . "</td>";
-                                            echo "<td>" . $row['job'] . "</td>";
-                                            echo "<td>" . $row['department'] . "</td>";
-                                            echo '<td><a href="handlerEmployees.php?id=' . $row['id'] . '" class="btn btn-secondary btn-circle"><i class="fas fa-fw fa-wrench"></i></a></td>';
-
-                                            echo "</tr>";
+                                        $attendance = [
+                                            'daysAbsent' => $absent,
+                                            'lateArrivals' => $late
+                                        ];
+                                        try {
+                                            $compositeScore = calculateCompositeScore($attendance, $kpi, $overtime, $maxDaysAbsent, $maxLateArrivals, $maxKPI, $maxOvertime);
+                                            $decision = makeTerminationDecision($compositeScore);
+                                            $color = getColor($decision);
+                                            echo "<h4 class='font-weight-bold text-primary'>Employee Performance Evaluation Result</h4>";
+                                            echo "Composite Score: " . $compositeScore * 100 . "<br>";
+                                            echo "<span style='color: $color;'>Decision: " . $decision . "</span><br>";
+                                        } catch (Exception $e) {
+                                            echo 'Error: ' . $e->getMessage();
                                         }
-                                    } else {
-                                        echo "<tr><td colspan='8'>No data found</td></tr>";
-                                    }
-                                    ?>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
 
+                                    }
+
+                                    ?>
+                        </div>
+
+                        </form>
+
+
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -421,7 +460,7 @@ include ('conn.php');
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.php">Logout</a>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -438,11 +477,12 @@ include ('conn.php');
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/chart-bar-demo.js"></script>
 
 </body>
 

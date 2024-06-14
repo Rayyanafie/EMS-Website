@@ -1,17 +1,18 @@
 <?php
 include ('conn.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $department = $_POST['department'];
-    $location = $_POST['location'];
-    $query = "INSERT INTO tbl_departments (name, location) VALUES ('$department', '$location')";
+    $Employee = $_POST['Employee'];
+    $Salary = $_POST['Salary'];
+    $Overtime = $_POST['Overtime'];
+    $query = "INSERT INTO tbl_payslip (employee, salary_period, total_overtime) VALUES ('$Employee', '$Salary', '$Overtime')";
     $result = mysqli_query(connection(), $query);
     if ($result) {
-        echo "<script> alert('Department added successfully.');</script>
+        echo "<script> alert('Payslip  added successfully.');</script>
         <script> setTimeout(function() { window.location.href = 'index.php'; }, 1000);</script>";
         exit;
     } else {
-        echo "<script> alert('Failed to add Department.');</script>
-        <script> setTimeout(function() { window.location.href = 'addDepartment.php'; }, 1000);</script>";
+        echo "<script> alert('Failed to add Payslip .');</script>
+        <script> setTimeout(function() { window.location.href = 'addPayslip .php'; }, 1000);</script>";
         exit;
     }
 }
@@ -74,12 +75,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Employee
             </div>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-user-alt"></i>
                     <span>Employee Management</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -90,6 +91,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Data Management</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tablePayslip s.php">Payslip s</a>
+                    </div>
+                </div>
+            </li>
+
+            <div class="sidebar-heading">
+                Utilities
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="performance.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Performance Calculator</span></a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -98,6 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -205,31 +235,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="card-body">
                             <class="table-responsive">
-                                <?php
-                                $sql = "SELECT id, city FROM tbl_locations";
-                                $result = mysqli_query(connection(), $sql);
-
-                                $countries = [];
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        $countries[] = $row;
-                                    }
-                                }
-                                ?>
                                 <form class="user" action="" method="Post">
                                     <div class="form-group">
-                                        <label for="First Name">Department Name</label>
-                                        <input type="text" class="form-control" id="first" name="department"
-                                            placeholder="Department Name" required>
+                                        <label for="Employee">Employee ID</label>
+                                        <input type="text" class="form-control" id="Employee" name="Employee"
+                                            placeholder="Employee" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="location">Choose a Location:</label></br>
-                                        <select class="btn btn-gray-100 border-dark dropdown-toggle" name="location"
-                                            id="country">
-                                            <?php foreach ($countries as $country): ?>
-                                                <option value="<?= $country['id']; ?>"><?= $country['city']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <label for="Salary Period">Salary Period</label>
+                                        <input type="date" class="form-control" id="Salary" name="Salary"
+                                            placeholder="Salary Period" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Total Overtime">Total Overtime</label>
+                                        <input type="number" class="form-control" id="Overtime" name="Overtime"
+                                            placeholder="Total Overtime" required>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" name="submit"

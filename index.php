@@ -68,6 +68,7 @@ include ('conn.php');
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
+                        <a class="collapse-item" href="tablePayslip.php">Payslip</a>
                     </div>
                 </div>
             </li>
@@ -88,7 +89,14 @@ include ('conn.php');
                     </div>
                 </div>
             </li>
-
+            <div class="sidebar-heading">
+                Utilities
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="performance.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Performance Calculator</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -311,7 +319,7 @@ include ('conn.php');
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 mb-4">
+                        <div class="col-lg-4 mb-4 text-center">
                             <a href="addEmployee.php" class="card bg-primary text-white ">
                                 <div class="card-body">
                                     Add Employee
@@ -319,7 +327,7 @@ include ('conn.php');
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-4 mb-4">
+                        <div class="col-lg-4 mb-4 text-center">
                             <a href="addJobs.php" class="card bg-success text-white shadow">
                                 <div class="card-body">
                                     Add Job
@@ -327,7 +335,7 @@ include ('conn.php');
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-4 mb-4">
+                        <div class="col-lg-4 mb-4 text-center">
                             <a href="addCountry.php" class="card bg-info text-white shadow">
                                 <div class="card-body">
                                     Add Department
@@ -335,7 +343,7 @@ include ('conn.php');
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-6 mb-4 text-center">
                             <a href="addCountry.php" class="card bg-warning text-white shadow">
                                 <div class="card-body">
                                     Add Country
@@ -343,10 +351,17 @@ include ('conn.php');
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-6 mb-4 ">
+                        <div class="col-lg-6 mb-4 text-center">
                             <a href="addlocation.php" class="card bg-danger text-white shadow">
                                 <div class="card-body ">
                                     Add location
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-12 mb-4 text-center">
+                            <a href="addPayslip.php" class="card bg-secondary text-white shadow">
+                                <div class="card-body ">
+                                    Add Payslip
                                 </div>
                             </a>
                         </div>
