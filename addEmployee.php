@@ -322,7 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" name="submit"
-                                            class="btn btn-primary col-md-12">submit</button>
+                                            class="btn btn-primary col-md-12">Submit</button>
                                     </div>
                         </div>
                         </form>
