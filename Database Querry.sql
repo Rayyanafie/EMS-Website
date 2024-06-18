@@ -71,6 +71,7 @@ CREATE TABLE tbl_accounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    email VARCHAR(50),
     otp INT,
     is_expired BIT,
     is_used BIT,
@@ -607,28 +608,12 @@ VALUES
     ('Madison', 'Hill', 'Female', 'madison.hill@example.com', '012-345-6789', '2024-06-01', 81000, 4, 'J105', 5);
     
 -- Insert into tbl_accounts
-INSERT INTO tbl_accounts (id, username, password, otp, is_expired, is_used)
+INSERT INTO tbl_accounts (id, username, password,email, otp, is_expired, is_used)
 VALUES 
-    (1, 'john', '123', 123456, 0, NULL),
-    (2, 'jane', '456', 789012, 0, NULL),
-    (3, 'smith', '789', 234567, 0, NULL),
-    (4, 'alice', 'abc', 890123, 0, NULL),
-    (5, 'bob', 'def', 456789, 0, NULL),
-    (6, 'emma', 'ghi', 567890, 0, NULL),
-    (7, 'michael', 'jkl', 678901, 0, NULL),
-    (8, 'sophia', 'mno', 789012, 0, NULL),
-    (9, 'david', 'pqr', 890123, 0, NULL),
-    (10, 'olivia', 'stu', 901234, 0, NULL);
-    (11, '2024-06-01', 12),
-    (12, '2024-06-01', 14),
-    (13, '2024-06-01', 16),
-    (14, '2024-06-01', 18),
-    (15, '2024-06-01', 20),
-    (16, '2024-06-01', 22),
-    (17, '2024-06-01', 24),
-    (18, '2024-06-01', 26),
-    (19, '2024-06-01', 28),
-    (20, '2024-06-01', 30);
+    (1, 'john', '123','john.doe@example.com', 123456, 0, NULL),
+    (2, 'jane', '456','jane.smith@example.com', 789012, 0, NULL),
+	(3, 'michael', 'jkl','michael.brown@example.com', 678901, 0, NULL);
+
     
 -- Insert into tbl_account_roles
 INSERT INTO tbl_account_roles (account, role)
@@ -647,7 +632,17 @@ VALUES
     (7, '2024-06-01', 11),
     (8, '2024-06-01', 17),
     (9, '2024-06-01', 14),
-    (10, '2024-06-01', 16);  -- Assuming the employee IDs are sequential
+    (10, '2024-06-01', 16),
+     (11, '2024-06-01', 12),
+    (12, '2024-06-01', 14),
+    (13, '2024-06-01', 16),
+    (14, '2024-06-01', 18),
+    (15, '2024-06-01', 20),
+    (16, '2024-06-01', 22),
+    (17, '2024-06-01', 24),
+    (18, '2024-06-01', 26),
+    (19, '2024-06-01', 28),
+    (20, '2024-06-01', 30);
 
 
 CREATE VIEW vw_employee_salary AS

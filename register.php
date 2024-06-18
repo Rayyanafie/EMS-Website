@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result1->num_rows > 0) {
             // Email exists, insert new account
-            $query2 = "INSERT INTO tbl_accounts (id,username, password) VALUES ($id,'$username','$password')";
+            $query2 = "INSERT INTO tbl_accounts (id,username,email, password) VALUES ($id,'$username','email','$password')";
             $result = mysqli_query(connection(), $query2);
             if ($result) {
                 echo "<script> alert('Account created successfully.');</script>
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Register</title>
+    <title>EMS - Register</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
