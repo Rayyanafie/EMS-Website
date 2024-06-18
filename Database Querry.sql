@@ -114,6 +114,43 @@ CREATE TABLE tbl_role_permissions (
     FOREIGN KEY (role) REFERENCES tbl_roles(id) ON DELETE CASCADE,
     FOREIGN KEY (permission) REFERENCES tbl_permissions(id) ON DELETE SET NULL
 );
+DELIMITER //
+
+CREATE FUNCTION func_salary(job_id VARCHAR(10), salary INT)
+RETURNS BIT
+DETERMINISTIC
+BEGIN
+    DECLARE result BIT;
+
+    SELECT CASE
+        WHEN salary BETWEEN j.min_salary AND j.max_salary THEN 1
+        ELSE 0
+    END INTO result
+    FROM tbl_jobs j
+    WHERE j.id = job_id;
+
+    RETURN result;
+END //
+
+DELIMITER ;
+DELIMITER //
+
+CREATE FUNCTION func_max_salary(min_salary INT, max_salary INT)
+RETURNS BIT
+DETERMINISTIC
+BEGIN
+    DECLARE result BIT;
+
+    IF max_salary > min_salary THEN
+        SET result = 1;
+    ELSE
+        SET result = 0;
+    END IF;
+
+    RETURN result;
+END //
+
+DELIMITER ;
 
 -- Trigger
 DELIMITER //
@@ -173,7 +210,7 @@ DELIMITER ;
 -- Update Department
 DELIMITER //
 CREATE PROCEDURE usp_update_department(
-    IN id INT,
+    IN id1 INT,
     IN name VARCHAR(30),
     IN location INT
 )
@@ -181,18 +218,18 @@ BEGIN
     UPDATE tbl_departments
     SET name = name,
         location = location
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Department
 DELIMITER //
 CREATE PROCEDURE usp_delete_department(
-    IN id INT
+    IN id1 INT
 )
 BEGIN
     DELETE FROM tbl_departments
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
@@ -210,24 +247,24 @@ DELIMITER ;
 -- Update Region
 DELIMITER //
 CREATE PROCEDURE usp_update_region(
-    IN id INT,
+    IN id1 INT,
     IN name VARCHAR(25)
 )
 BEGIN
     UPDATE tbl_regions
     SET name = name
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Region
 DELIMITER //
 CREATE PROCEDURE usp_delete_region(
-    IN id INT
+    IN id1 INT
 )
 BEGIN
     DELETE FROM tbl_regions
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
@@ -245,24 +282,24 @@ DELIMITER ;
 -- Update Role
 DELIMITER //
 CREATE PROCEDURE usp_update_roles(
-    IN id INT,
+    IN id1 INT,
     IN name VARCHAR(50)
 )
 BEGIN
     UPDATE tbl_roles
     SET name = name
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Role
 DELIMITER //
 CREATE PROCEDURE usp_delete_roles(
-    IN id INT
+    IN id1 INT
 )
 BEGIN
     DELETE FROM tbl_roles
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
@@ -280,24 +317,24 @@ DELIMITER ;
 -- Update Permission
 DELIMITER //
 CREATE PROCEDURE usp_update_permission(
-    IN id INT,
+    IN id1 INT,
     IN name VARCHAR(100)
 )
 BEGIN
     UPDATE tbl_permissions
     SET name = name
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Permission
 DELIMITER //
 CREATE PROCEDURE usp_delete_permission(
-    IN id INT
+    IN id1 INT
 )
 BEGIN
     DELETE FROM tbl_permissions
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
@@ -319,7 +356,7 @@ DELIMITER ;
 -- Update Location
 DELIMITER //
 CREATE PROCEDURE usp_update_location(
-    IN id INT,
+    IN id1 INT,
     IN street_address VARCHAR(40),
     IN postal_code VARCHAR(12),
     IN city VARCHAR(30),
@@ -333,25 +370,25 @@ BEGIN
         city = city,
         state_province = state_province,
         country = country
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Location
 DELIMITER //
 CREATE PROCEDURE usp_delete_location(
-    IN id INT
+    IN id1 INT
 )
 BEGIN
     DELETE FROM tbl_locations
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Add Country
 DELIMITER //
 CREATE PROCEDURE usp_add_country(
-    IN id CHAR(3),
+    IN id1 CHAR(3),
     IN name VARCHAR(40),
     IN region INT
 )
@@ -364,33 +401,33 @@ DELIMITER ;
 -- Update Country
 DELIMITER //
 CREATE PROCEDURE usp_update_country(
-    IN id CHAR(3),
+    IN id1 CHAR(3),
     IN name VARCHAR(40),
     IN region INT
 )
 BEGIN
     UPDATE tbl_countries
-    SET name = name,
+    set name = name,
         region = region
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Delete Country
 DELIMITER //
 CREATE PROCEDURE usp_delete_country(
-    IN id CHAR(3)
+    IN id1 CHAR(3)
 )
 BEGIN
     DELETE FROM tbl_countries
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
 -- Add Jobs
 DELIMITER //
 CREATE PROCEDURE usp_add_jobs(
-    IN id VARCHAR(10),
+    IN id1 VARCHAR(10),
     IN title VARCHAR(35),
     IN min_salary INT,
     IN max_salary INT
@@ -413,7 +450,7 @@ DELIMITER ;
 -- Update Jobs
 DELIMITER //
 CREATE PROCEDURE usp_update_jobs(
-    IN id VARCHAR(10),
+    IN id1 VARCHAR(10),
     IN title VARCHAR(35),
     IN min_salary INT,
     IN max_salary INT
@@ -428,7 +465,7 @@ BEGIN
         SET title = title,
             min_salary = min_salary,
             max_salary = max_salary
-        WHERE id = id;
+        WHERE id = id1;
     ELSE
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The max salary must be greater than the min salary';
@@ -439,11 +476,11 @@ DELIMITER ;
 -- Delete Jobs
 DELIMITER //
 CREATE PROCEDURE usp_delete_jobs(
-    IN id VARCHAR(10)
+    IN id1 VARCHAR(10)
 )
 BEGIN
     DELETE FROM tbl_jobs
-    WHERE id = id;
+    WHERE id = id1;
 END //
 DELIMITER ;
 
@@ -618,8 +655,7 @@ VALUES
 -- Insert into tbl_account_roles
 INSERT INTO tbl_account_roles (account, role)
 VALUES 
-    (1, 1), (2, 2), (3, 3), (4, 1), (5, 2),
-    (6, 3), (7, 1), (8, 2), (9, 3), (10, 1);
+    (1, 1), (2, 2);
 -- Insert into tbl_payslip
 INSERT INTO tbl_payslip (employee, salary_period, overtime)
 VALUES 

@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $title = $_POST['title'];
         $min = $_POST['min'];
         $max = $_POST['max'];
-        $query = "UPDATE tbl_jobs SET title = '$title', min_salary = '$min', max_salary = '$max' WHERE id = '$id'";
+        $query = "CALL usp_update_jobs( '$id', '$title', '$min', '$max')";
         $result = mysqli_query(connection(), $query);
         if ($result) {
             echo "<script> alert('Job added successfully.');</script>
@@ -128,6 +128,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
                         <a class="collapse-item" href="tablePayslip.php">Payslip</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Data Management</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tableRegions.php">Regions</a>
                     </div>
                 </div>
             </li>
@@ -272,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <div class="form-group">
                                         <label for="id">Job ID</label>
                                         <input type="text" class="form-control" id="id" name="id" placeholder="Job ID"
-                                            value="<?= htmlspecialchars($data['id'] ?? '') ?>" required>
+                                            value="<?= htmlspecialchars($data['id'] ?? '') ?>" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="title">Job Title</label>
@@ -300,27 +317,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         <button type="submit" name="delete"
                                             class="btn btn-danger col-md-2">Delete</button>
                                     </div>
-                                </form>
-
                         </div>
+
+                        </form>
                     </div>
                 </div>
-
             </div>
-            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Main Content -->
+        <!-- /.container-fluid -->
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
-                </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Your Website 2020</span>
             </div>
-        </footer>
-        <!-- End of Footer -->
+        </div>
+    </footer>
+    <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->

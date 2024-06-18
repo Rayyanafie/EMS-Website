@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $id = $_POST['id'];
         $name = $_POST['name'];
         $region = $_POST['region'];
-        $query = "UPDATE tbl_countries SET name = '$name', region = '$region' WHERE id = '$id'";
+        $query = "CALL usp_update_country('$nrp_upd', '$name', '$region')";
         $result = mysqli_query(connection(), $query);
         if ($result) {
             echo "<script> alert('Country added successfully.');</script>
@@ -127,6 +127,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <a class="collapse-item" href="tableEmployees.php">Employee</a>
                         <a class="collapse-item" href="history.php">History</a>
                         <a class="collapse-item" href="tablePayslip.php">Payslip</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Data Management</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="tableJobs.php">Jobs</a>
+                        <a class="collapse-item" href="tableDepartments.php">Departments</a>
+                        <a class="collapse-item" href="tableLocations.php">Locations</a>
+                        <a class="collapse-item" href="tableCountries.php">Countries</a>
+                        <a class="collapse-item" href="tableRegions.php">Regions</a>
                     </div>
                 </div>
             </li>

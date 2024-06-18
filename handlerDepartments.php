@@ -40,10 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $department = $_POST['department'];
         $location = $_POST['location'];
-        $query = "UPDATE tbl_departments SET 
-        name = '$department', 
-        location = '$location
-        where id = $nrp_upd'";
+        $query = "CALL usp_update_department('$nrp_upd', '$department', '$location')";
         $result = mysqli_query(connection(), $query);
         if ($result) {
             echo "<script> alert('Department added successfully.');</script>

@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $city = $_POST['city'];
         $state = $_POST['state'];
         $location = $_POST['location'];
-        $query = "UPDATE tbl_locations SET street_address = '$street', postal_code = '$postal', city = '$city', state_province = '$state', country = '$location' WHERE id = '$nrp_upd'";
+        $query = "CALL usp_update_location('$nrp_upd', '$street', '$postal', '$city', '$state', '$location')";
         $result = mysqli_query(connection(), $query);
         if ($result) {
             echo "<script> alert('location added successfully.');</script>
@@ -332,28 +332,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <button type="submit" name="delete"
                                                 class="btn btn-danger col-md-2">Delete</button>
                                         </div>
-                                    </form>
-                                </form>
-
                         </div>
+                        </form>
+                        </form>
+
                     </div>
                 </div>
-
             </div>
-            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Main Content -->
+        <!-- /.container-fluid -->
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
-                </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Your Website 2020</span>
             </div>
-        </footer>
-        <!-- End of Footer -->
+        </div>
+    </footer>
+    <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
